@@ -14,5 +14,7 @@
     <groupId>com.foo.bar</groupId>
     <artifactId>contrib_ap_client</artifactId>
     <packaging>jar</packaging>
+    <name>Arbetsprov Contribe - Client</name>
+
 
 </project>

@@ -8,6 +8,7 @@ import com.foo.bar.model.BookDataStoreEntry;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,6 +33,14 @@ public class DataStore implements IDataStore {
             throw new DatastoreReadException("Malformed URL " + URL, e);
         } catch (IOException e) {
             throw new DatastoreReadException("I/O error ", e);
+        }
+    }
+
+    public DataStore(Reader theReader) throws DatastoreReadException {
+        BookInputStream theStream = new BookInputStream(theReader);
+        BookDataStoreEntry aBook;
+        while (null != (aBook = theStream.readBook())) {
+            itsStore.add(aBook);
         }
     }
 

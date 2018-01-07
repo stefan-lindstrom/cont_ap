@@ -14,11 +14,16 @@
     <groupId>com.foo.bar</groupId>
     <artifactId>contrib_ap_service</artifactId>
     <packaging>jar</packaging>
+    <name>Arbetsprov Contribe - Service</name>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
         </dependency>
     </dependencies>
 </project>

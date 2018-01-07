@@ -14,4 +14,5 @@
     <groupId>com.foo.bar</groupId>
     <artifactId>contrib_ap_shared</artifactId>
     <packaging>jar</packaging>
+    <name>Arbetsprov Contribe - Shared</name>
 </project>
