@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /*
- * Datastore with support functions. Reads data from URL. Normally would not exists (data would be in a DB with a JPA model. 
+ * Datastore with support functions. Reads data from URL. Normally would not exists (data would be in a DB with a JPA model.
  */
 public class DataStore implements IDataStore {
     Collection<BookDataStoreEntry> itsStore = new HashSet<>();

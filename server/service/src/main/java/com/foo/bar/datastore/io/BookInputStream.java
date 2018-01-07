@@ -4,10 +4,7 @@ package com.foo.bar.datastore.io;
 import com.foo.bar.model.Book;
 import com.foo.bar.model.BookDataStoreEntry;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -20,6 +17,11 @@ public class BookInputStream extends InputStream implements IBookInputStream {
     public BookInputStream(InputStream theStream) {
         itsReader = new LineNumberReader(new InputStreamReader(theStream));
     }
+
+    public BookInputStream(Reader aReader) {
+        itsReader = new LineNumberReader(aReader);
+    }
+
 
     @Override
     public BookDataStoreEntry readBook() throws DatastoreReadException {

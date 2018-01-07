@@ -14,4 +14,11 @@
     <groupId>com.foo.bar</groupId>
     <artifactId>contrib_ap_service</artifactId>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 </project>
