@@ -4,23 +4,25 @@ import com.foo.bar.datastore.io.BookInputStream;
 import com.foo.bar.datastore.io.DatastoreReadException;
 import com.foo.bar.model.Book;
 import com.foo.bar.model.BookDataStoreEntry;
+import com.foo.bar.types.StatusCode;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 /*
  * Datastore with support functions. Reads data from URL. Normally would not exists (data would be in a DB with a JPA model.
  */
 public class DataStore implements IDataStore {
-    Collection<BookDataStoreEntry> itsStore = new HashSet<>();
+    private Collection<BookDataStoreEntry> itsStore = new HashSet<>();
+    private BiPredicate<String, String> searchFun = (x,y) -> x.toUpperCase().contains(y.toUpperCase());
 
     public DataStore() throws DatastoreReadException {
         URL url;
@@ -57,43 +59,48 @@ public class DataStore implements IDataStore {
         return itsStore.stream().filter(b -> b.getAntal() > 0).collect(Collectors.toSet());
     }
 
+    @Override
     public Collection<Book> getBookList() {
         return itsStore.stream().map(BookDataStoreEntry::getBook).collect(Collectors.toSet());
     }
 
+    @Override
     public Collection<Book> findBooks(String searchTerm) {
         return getAllStoreItems().stream()
-                .filter(b -> b.getBook().getAuthor().contains(searchTerm) || b.getBook().getTitle().contains(searchTerm))
+                .filter(b -> searchFun.test(b.getBook().getAuthor(),searchTerm) || searchFun.test(b.getBook().getTitle(),searchTerm))
                 .map(BookDataStoreEntry::getBook)
                 .collect(Collectors.toSet());
     }
 
     public Collection<Book> findBooks(String author, String title) {
         return getAllStoreItems().stream()
-                .filter(b -> b.getBook().getAuthor().contains(author) && b.getBook().getTitle().contains(title))
+                .filter(b -> searchFun.test(b.getBook().getAuthor(),author) && searchFun.test(b.getBook().getTitle(), title))
                 .map(BookDataStoreEntry::getBook)
                 .collect(Collectors.toSet());
     }
 
-    public boolean buyBook(Book theBook) {
+    @Override
+    public StatusCode buyBook(Book theBook) {
         BookDataStoreEntry entry = findByBook(theBook);
         if (null != entry) {
-            entry.setAntal(entry.getAntal() - 1);
-            return true;
+            if (entry.getAntal() > 0) {
+                entry.setAntal(entry.getAntal() - 1);
+                // Not strictly needed, but if implementation changes, this should be safe
+                addBook(theBook, entry.getAntal());
+                return StatusCode.OK;
+            }
+            return StatusCode.NOT_IN_STOCK;
         }
-        return false;
+        return StatusCode.DOES_NOT_EXIST;
     }
 
+    @Override
     public boolean addBook(Book theBook, Integer theAntal) {
-        if (null == findByBook(theBook)) {
-            itsStore.add(new BookDataStoreEntry(theBook, theAntal));
-            return true;
-        }
-        return false;
+        return  (theAntal < 0) ? false : itsStore.add(new BookDataStoreEntry(theBook, theAntal));
     }
 
     private BookDataStoreEntry findByBook(Book theParam) {
-        return getItemsInStore().stream()
+        return getAllStoreItems().stream()
                 .filter(be -> be.getBook().equals(theParam))
                 .findFirst()
                 .orElse(null);
@@ -112,34 +119,6 @@ public class DataStore implements IDataStore {
         } catch (IOException e) {
             throw new DatastoreReadException("I/O error ", e);
         }
-    }
-
-    public static void main(String[] argv) throws Exception {
-        DataStore ds = new DataStore();
-        ds.dumpStoreToStream(System.out);
-
-        System.out.println("");
-        ds.getBookList().forEach(b -> System.out.println(b));
-
-        System.out.println("");
-        ds.getItemsInStore().forEach(b -> System.out.println(b));
-
-        System.out.println("");
-        System.out.println("Findbook(2 args) = ");
-        ds.findBooks("ing Bast", "andom Sa").forEach(b -> System.out.println(b));
-
-        System.out.println("");
-        System.out.println("Findbook(1 arg) = ");
-        ds.findBooks("Money").forEach(b -> System.out.println(b));
-
-        System.out.println("");
-        System.out.println("buyBook() = " + ds.buyBook(ds.findBooks("Money").iterator().next()));
-        System.out.println("");
-        ds.getItemsInStore().forEach(b -> System.out.println(b));
-
-        ds.addBook(new Book("Demon Haunted World", "Carl Sagan", new BigDecimal("155.50")), 3);
-        System.out.println("");
-        ds.getItemsInStore().forEach(b -> System.out.println(b));
     }
 }
 

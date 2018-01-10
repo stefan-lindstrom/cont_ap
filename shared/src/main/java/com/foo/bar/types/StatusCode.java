@@ -9,5 +9,5 @@ public enum StatusCode {
         itsCode = theCode;
     }
 
-    Integer code() { return itsCode; }
+    public Integer code() { return itsCode; }
 }
