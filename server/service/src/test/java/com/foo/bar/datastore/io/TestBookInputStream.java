@@ -19,14 +19,14 @@ public class TestBookInputStream {
     @Test
     public void testEmptyStream() throws Exception {
         BookInputStream bis = new BookInputStream(new StringReader(""));
-        assertNull(bis.readBook());
+        assertNull("Expected null from empty stream, got book", bis.readBook());
     }
 
     @Test
     public void testNonEmptyStream() throws Exception {
         BookInputStream bis = new BookInputStream(new StringReader("Demon Haunted World;Carl Sagan;155.00;2"));
-        assertNotNull(bis.readBook());
-        assertNull(bis.readBook());
+        assertNotNull("Expected to read a book, got null", bis.readBook());
+        assertNull("Second read expected to be null, got book", bis.readBook());
     }
 
     @Test(expected = DatastoreReadException.class)

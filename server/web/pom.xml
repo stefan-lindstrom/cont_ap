@@ -15,4 +15,32 @@
     <artifactId>contrib_ap_web</artifactId>
     <packaging>jar</packaging>
     <name>Arbetsprov Contribe - Web</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-http</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.foo.bar</groupId>
+            <artifactId>contrib_ap_service</artifactId>
+            <version>1.0.0-0-SNAPSHOT</version>
+        </dependency>
+
+         <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-binding</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 </project>

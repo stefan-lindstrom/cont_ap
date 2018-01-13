@@ -15,4 +15,11 @@
     <artifactId>contrib_ap_shared</artifactId>
     <packaging>jar</packaging>
     <name>Arbetsprov Contribe - Shared</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-binding</artifactId>
+        </dependency>
+    </dependencies>
 </project>

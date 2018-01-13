@@ -27,6 +27,14 @@
         <version>1.7.3</version>
         <scope>test</scope>
       </dependency>
+
+      <dependency>
+        <groupId>org.glassfish.jersey</groupId>
+        <artifactId>jersey-bom</artifactId>
+        <version>${jersey.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -46,10 +54,15 @@
       </plugin>
     </plugins>
   </build>
+
   <modules>
     <module>shared</module>
     <module>server</module>
     <module>client</module>
   </modules>
 
+  <properties>
+    <jersey.version>2.26</jersey.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 </project>

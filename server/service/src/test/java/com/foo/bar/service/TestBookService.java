@@ -35,20 +35,20 @@ public class TestBookService {
     @Test
     public void testGetStock() {
         Book[] theList = itsService.list(null);
-        assertEquals(4, theList.length);
+        assertEquals("Expected to get list of 4 books", 4, theList.length);
     }
 
     @Test
     public void testListWithParamsMatch() {
         Book[] theList = itsService.list("re");
-        assertEquals(2, theList.length);
+        assertEquals("Expected searcn to return 2 books", 2, theList.length);
 
     }
 
     @Test
     public void testListWithParamsNoMatch() {
         Book[] theList = itsService.list("herpderp");
-        assertEquals(0, theList.length);
+        assertEquals("Expected search to return empty list", 0, theList.length);
     }
 
     @Test
@@ -58,10 +58,10 @@ public class TestBookService {
                 new Book("Leviathan Wakes","James S A Corey", new BigDecimal("15.37")),
                 new Book("Herp", "Derp", new BigDecimal(42.20))
         );
-       assertNotNull(result);
-       assertEquals(3, result.length);
-       assertEquals(StatusCode.OK.code().intValue(), result[0]);
-       assertEquals(StatusCode.NOT_IN_STOCK.code().intValue(), result[1]);
-       assertEquals(StatusCode.DOES_NOT_EXIST.code().intValue(), result[2]);
+       assertNotNull("Expected results from service", result);
+       assertEquals("Expected status from 3 attempted purchases", 3, result.length);
+       assertEquals("Expected first purchase to succeed", StatusCode.OK.code().intValue(), result[0]);
+       assertEquals("Expected second purchase to fail due to not being stocked", StatusCode.NOT_IN_STOCK.code().intValue(), result[1]);
+       assertEquals("Expected pruchase to fail due to book not existing", StatusCode.DOES_NOT_EXIST.code().intValue(), result[2]);
     }
 }
