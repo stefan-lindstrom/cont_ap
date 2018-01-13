@@ -16,5 +16,10 @@
     <packaging>jar</packaging>
     <name>Arbetsprov Contribe - Client</name>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.foo.bar</groupId>
+            <artifactId>contrib_ap_shared</artifactId>
+        </dependency>
+    </dependencies>
 </project>

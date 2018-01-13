@@ -35,6 +35,31 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
+      <dependency>
+        <groupId>com.foo.bar</groupId>
+        <artifactId>contrib_ap_service</artifactId>
+        <version>${ap.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.foo.bar</groupId>
+        <artifactId>contrib_ap_web</artifactId>
+        <version>${ap.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.foo.bar</groupId>
+        <artifactId>contrib_ap_shared</artifactId>
+        <version>${ap.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.foo.bar</groupId>
+        <artifactId>contrib_ap_client</artifactId>
+        <version>${ap.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -64,5 +89,6 @@
   <properties>
     <jersey.version>2.26</jersey.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <ap.version>1.0.0-0-SNAPSHOT</ap.version>
   </properties>
 </project>
