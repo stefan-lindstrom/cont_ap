@@ -16,11 +16,6 @@ public class AdminClient extends AbstractClient {
     }
 
     @Override
-    public Book[] list(String searchString) {
-        throw new NotImplementedException("list() is not implemented for store admins (but maybe it should be? :))");
-    }
-
-    @Override
     public boolean add(Book book, int quantity) {
         WebTarget target = buildBasicTarget(IBookRest.class);
         target = target.path("add").queryParam("quantity", quantity);

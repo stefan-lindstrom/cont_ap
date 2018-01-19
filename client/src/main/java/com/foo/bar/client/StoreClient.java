@@ -3,7 +3,6 @@ package com.foo.bar.client;
 import com.foo.bar.exceptions.NotImplementedException;
 import com.foo.bar.helpers.BookHelper;
 import com.foo.bar.model.Book;
-import com.foo.bar.model.BookDTO;
 import com.foo.bar.rest.IBookRest;
 
 import javax.ws.rs.client.Entity;
@@ -18,19 +17,6 @@ import java.util.stream.Collectors;
 public class StoreClient extends AbstractClient {
     public StoreClient() {
         super();
-    }
-
-    @Override
-    public Book[] list(String searchString) {
-        WebTarget target = buildBasicTarget(IBookRest.class);
-        target = target.path("list").queryParam("search", (null == searchString ? "" : searchString));
-        Response response = target.request(MediaType.APPLICATION_JSON).get(Response.class);
-
-        List<BookDTO> listOfBooks = getTypeFromResponse(new GenericType<List<BookDTO>>() {}, response);
-
-        return listOfBooks.stream()
-                .map(BookHelper::mapToBook)
-                .toArray(Book[]::new);
     }
 
     @Override
