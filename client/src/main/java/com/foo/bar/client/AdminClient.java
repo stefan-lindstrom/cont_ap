@@ -17,6 +17,10 @@ public class AdminClient extends AbstractClient {
 
     @Override
     public boolean add(Book book, int quantity) {
+        if (!itsValidationHelper.validateSimple(book)) {
+            return false;
+        }
+
         WebTarget target = buildBasicTarget(IBookRest.class);
         target = target.path("add").queryParam("quantity", quantity);
         Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(BookHelper.mapToDTO(book)));

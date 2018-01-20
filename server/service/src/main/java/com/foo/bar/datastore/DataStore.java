@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
@@ -84,9 +85,7 @@ public class DataStore implements IDataStore {
         BookDataStoreEntry entry = findByBook(theBook);
         if (null != entry) {
             if (entry.getAntal() > 0) {
-                entry.setAntal(entry.getAntal() - 1);
-                // Not strictly needed, but if implementation changes, this should be safe
-                addBook(theBook, entry.getAntal());
+                addBook(theBook, entry.getAntal() - 1);
                 return StatusCode.OK;
             }
             return StatusCode.NOT_IN_STOCK;
@@ -96,7 +95,21 @@ public class DataStore implements IDataStore {
 
     @Override
     public boolean addBook(Book theBook, Integer theAntal) {
-        return  (theAntal < 0) ? false : itsStore.add(new BookDataStoreEntry(theBook, theAntal));
+        if (theAntal < 0)
+            return false;
+
+        List<BookDataStoreEntry> entries =itsStore.stream().filter(ent -> ent.getBook().equals(theBook)).collect(Collectors.toList());
+        if (entries.isEmpty()) {
+            return itsStore.add(new BookDataStoreEntry(theBook, theAntal));
+        }
+        if (entries.size() == 1) {
+            BookDataStoreEntry entry = entries.get(0);
+            itsStore.remove(entry);
+            entry.setAntal(theAntal);
+            return itsStore.add(entry);
+        }
+
+        return false;
     }
 
     private BookDataStoreEntry findByBook(Book theParam) {

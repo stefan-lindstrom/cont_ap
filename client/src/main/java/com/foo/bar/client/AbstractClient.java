@@ -1,6 +1,7 @@
 package com.foo.bar.client;
 
 import com.foo.bar.helpers.BookHelper;
+import com.foo.bar.helpers.ValidationHelper;
 import com.foo.bar.model.Book;
 import com.foo.bar.model.BookDTO;
 import com.foo.bar.rest.IBookRest;
@@ -17,10 +18,12 @@ import java.util.List;
 
 public abstract class AbstractClient implements ClientInterface {
     private Client itsClient;
+    protected ValidationHelper itsValidationHelper;
 
     public AbstractClient() {
         super();
          itsClient = ClientBuilder.newClient(new ClientConfig());
+         itsValidationHelper = new ValidationHelper();
     }
 
     @Override

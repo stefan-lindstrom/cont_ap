@@ -26,6 +26,9 @@ public class StoreClient extends AbstractClient {
 
     @Override
     public int[] buy(Book... books) {
+        if (!itsValidationHelper.validationCollection(books)) {
+            return new int[0];
+        }
         WebTarget target = buildBasicTarget(IBookRest.class);
         target = target.path("buy");
         Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(Arrays.stream(books).map(BookHelper::mapToDTO).collect(Collectors.toList())));
