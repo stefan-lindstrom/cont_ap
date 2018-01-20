@@ -3,10 +3,12 @@ package com.foo.bar.store;
 import com.foo.bar.client.ClientInterface;
 import com.foo.bar.client.StoreClient;
 import com.foo.bar.model.Book;
+import com.foo.bar.types.StatusCode;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.math.BigDecimal;
 import java.util.function.Function;
 
 public class Store {
@@ -34,7 +36,7 @@ public class Store {
     }
 
 
-    public void run() throws IOException {
+    public void run() {
         int choice = 0;
         do {
             try {
@@ -78,6 +80,27 @@ public class Store {
     }
 
     private void checkout() {
+        Book[] content = itsBasket.getContent();
+        int[] result = itsInterface.buy(content);
+        if (result.length != content.length) {
+            System.out.println("Fel vid köp, försök igen...");
+            return;
+        }
+
+        BigDecimal total = new BigDecimal(0);
+        for (int i = 0; i < content.length; ++i) {
+            System.out.print(content[i].getTitle() + " av " + content[i].getAuthor());
+            if (StatusCode.DOES_NOT_EXIST.code() == result[i]) {
+                System.out.println(" finns inte i systemet...");
+            } else if (StatusCode.NOT_IN_STOCK.code() == result[i]) {
+                System.out.println(" är slutsåld");
+            } else if (StatusCode.OK.code() == result[0]) {
+                System.out.println(" @ " + content[i].getPrice() + " köpt.");
+                total = total.add(content[i].getPrice());
+            }
+        }
+        System.out.println("Summa: " + total);
+        itsBasket.empty();
     }
 
     private void removeBook() {
@@ -103,10 +126,10 @@ public class Store {
             for (int i = 0; i < books.length; ++i ) {
                 System.out.println((i+1) + ") " + itsListBookFunction.apply(books[i]));
             }
-            System.out.println("\nVälj book (1 - " + books.length + "): ");
+            System.out.println("\nVälj bok (1 - " + books.length + "): ");
             int book = new Integer(itsInput.readLine());
             if (book < 1 || book > books.length) {
-                System.out.println("Book nummer " + book + " existerar ej...");
+                System.out.println("Bok nummer " + book + " existerar ej...");
                 return;
             }
             itsBasket.add(books[book-1]);

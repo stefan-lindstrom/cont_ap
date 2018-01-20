@@ -40,4 +40,8 @@ public class ShoppingBasket {
     public int numItemsInBasket() {
         return theBasket.size();
     }
+
+    public Book[] getContent() {
+        return theBasket.toArray(new Book[0]);
+    }
 }
