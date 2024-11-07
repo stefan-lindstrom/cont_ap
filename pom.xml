@@ -122,7 +122,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <ap.version>1.0.0-0-SNAPSHOT</ap.version>
     <javax.el.version>2.2.6</javax.el.version>
-    <hibernate.validation.version>6.1.5.Final</hibernate.validation.version>
+    <hibernate.validation.version>6.2.0.Final</hibernate.validation.version>
     <javax.validation.version>2.0.0.Final</javax.validation.version>
     <javax.el-api.version>3.0.0</javax.el-api.version>
   </properties>
